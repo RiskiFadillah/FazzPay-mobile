@@ -3,31 +3,29 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  Pressable,
   ScrollView,
 } from "react-native";
+import { useState } from "react";
 import stylesAuth from "../../../styles/globalcss";
 stylesAuth;
 import axios from "axios";
-import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-AsyncStorage;
 
-// Style
-
-export default function LoginScreen({ navigation }) {
+export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [userName, setUsername] = useState("");
 
   const handleLogin = (e) => {
+    console.log(`UserName: ${userName},Email: ${email}, Password: ${password}`);
     e.preventDefault();
     const dataLogin = {
       email: email,
       password: password,
+      firstname: userName,
     };
     console.log(dataLogin);
     axios({
-      url: "http://192.168.1.3:5000/api/v1/auth/login",
+      url: "http://192.168.1.3:5000/api/v1/auth/register",
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -35,14 +33,15 @@ export default function LoginScreen({ navigation }) {
       data: dataLogin,
     })
       .then((res) => {
-        AsyncStorage.setItem("userLogin", JSON.stringify(res.data.data));
-        navigation.navigate("Dashboard");
+        navigation.navigate("Login");
+        console.log(res);
       })
       .catch((err) => {
         console.log(err, "Tidak bisa terkirim");
         // navigation.navigate("Dashboard");
       });
   };
+
   return (
     <>
       <ScrollView>
@@ -50,7 +49,7 @@ export default function LoginScreen({ navigation }) {
           <Text style={stylesAuth.title}>FazzPay</Text>
         </View>
         <View style={stylesAuth.containerBody}>
-          <Text style={stylesAuth.subTitle}>Login</Text>
+          <Text style={stylesAuth.subTitle}>Sign Up</Text>
           <Text
             style={{
               fontSize: 15,
@@ -60,10 +59,14 @@ export default function LoginScreen({ navigation }) {
               color: "#3A3D42",
             }}
           >
-            Login to your existing account to access all the features in
-            FazzPay.
+            Create your account to access FazzPay.
           </Text>
-
+          <TextInput
+            style={stylesAuth.input}
+            onChangeText={setUsername}
+            value={userName}
+            placeholder="👨🏻‍🦲 User Name"
+          />
           <TextInput
             style={stylesAuth.input}
             onChangeText={setEmail}
@@ -89,18 +92,11 @@ export default function LoginScreen({ navigation }) {
             Forget Password?
           </Text>
           <TouchableOpacity style={stylesAuth.button} onPress={handleLogin}>
-            <Text style={stylesAuth.buttonText}>Login</Text>
+            <Text style={stylesAuth.buttonText}>Sign Up</Text>
           </TouchableOpacity>
           <Text style={{ marginTop: 30, color: "#3A3D42" }}>
-            Don’t have an account? Let’s{" "}
-            <Text
-              style={{ color: "#6379F4" }}
-              onPress={() => {
-                navigation.navigate("Sign Up");
-              }}
-            >
-              Sign Up
-            </Text>
+            Already have an account? Let’s{" "}
+            <Text style={{ color: "#6379F4" }}>Login</Text>
           </Text>
         </View>
       </ScrollView>
