@@ -6,13 +6,18 @@ import {
   Pressable,
   ScrollView,
   Image,
+  RefreshControl,
 } from "react-native";
 import { useState, useEffect } from "react";
 import stylesDashboard from "../../styles/styleDashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 stylesDashboard;
 
 export default function DashboardScreen({ navigation }) {
+  const [dataUsers, setDataUsers] = useState(null);
+  const [error, setError] = useState(null);
+  const [refetch, setRefetch] = useState(false);
   const [isLoggin, setIsLoggin] = useState({
     value: false,
     data: {},
@@ -27,6 +32,7 @@ export default function DashboardScreen({ navigation }) {
           data: JSON.parse(value),
         });
       } else {
+        aq;
         setIsLoggin({
           value: false,
           data: null,
@@ -40,17 +46,43 @@ export default function DashboardScreen({ navigation }) {
   useEffect(() => {
     getData();
   }, []);
-  let userProfile = JSON.stringify(isLoggin.data.user_profile);
-  {
-    isLoggin.value ? console.log(userProfile) : console.log("data tidak ada");
-  }
-  console.log(userProfile);
 
-  {
-    isLoggin.value
-      ? console.log(isLoggin.data.user_profile.images)
-      : console.log("data tidak ada");
+  const id_users = isLoggin.value ? isLoggin.data.user_profile.id_users : null;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://192.168.1.2:5000/api/v1/users/${id_users}`
+        );
+        setRefetch(setDataUsers(response.data.data));
+        console.log(response.data.data);
+      } catch (err) {
+        setError(err);
+      }
+    };
+    fetchData();
+  }, [refetch]);
+
+  if (error) {
+    return (
+      <View>
+        <Text>Error: {error.message}</Text>
+      </View>
+    );
   }
+
+  if (!dataUsers) {
+    return (
+      <View>
+        <Image
+          source={require("../../images/moneytransfer.gif")}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </View>
+    );
+  }
+  console.log(dataUsers, "dari data Users");
 
   return (
     <>
@@ -80,11 +112,7 @@ export default function DashboardScreen({ navigation }) {
           <View style={{ paddingTop: 4 }}>
             <Text>Hello,</Text>
             <Text style={{ fontSize: 20, paddingTop: 8 }}>
-              {isLoggin.value
-                ? isLoggin.data.user_profile.first_name +
-                  " " +
-                  isLoggin.data.user_profile.last_name
-                : ""}
+              {dataUsers ? dataUsers.first_name : ""}
             </Text>
           </View>
         </View>
@@ -106,10 +134,10 @@ export default function DashboardScreen({ navigation }) {
               navigation.navigate("Transaction");
             }}
           >
-            Rp. {isLoggin.value ? isLoggin.data.user_profile.balance : ""}
+            Rp. {dataUsers ? dataUsers.balance : ""}
           </Text>
           <Text style={{ color: "#ffff", paddingTop: 5, fontSize: 12 }}>
-            {isLoggin.value ? isLoggin.data.user_profile.phone_number : ""}
+            {dataUsers ? dataUsers.phone_number : ""}
           </Text>
         </View>
         <View
@@ -147,8 +175,8 @@ export default function DashboardScreen({ navigation }) {
           <Text>See all</Text>
         </View>
         <ScrollView>
-          <View style={{ height: 1000 }}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(() => {
+          <View style={{ height: 900 }}>
+            {[1, 2, 3, 4, 5, 6].map(() => {
               return (
                 <View style={stylesDashboard.cardContainer}>
                   <Image
@@ -156,7 +184,7 @@ export default function DashboardScreen({ navigation }) {
                     style={stylesDashboard.image}
                   />
                   <View style={stylesDashboard.cardText}>
-                    <Text style={stylesDashboard.name}>Miyawaki Sakura</Text>
+                    <Text style={stylesDashboard.name}>Sakura</Text>
                     <Text style={{ fontSize: 10 }}>Transfer</Text>
                   </View>
                   <Text style={stylesDashboard.price}>+Rp.50.000</Text>

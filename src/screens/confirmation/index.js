@@ -26,6 +26,7 @@ export default function ConfirmationSreen() {
   });
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [refetch, setRefetch] = useState(false);
   const getData = async () => {
     try {
       const id = await AsyncStorage.getItem("userLogin");
@@ -77,16 +78,16 @@ export default function ConfirmationSreen() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.3:5000/api/v1/users/${id_reciver}`
+          `http://192.168.1.2:5000/api/v1/users/${id_reciver}`
         );
-        setData(response.data.data);
+        setRefetch(setData(response.data.data));
         console.log(response.data.data);
       } catch (err) {
         setError(err);
       }
     };
     fetchData();
-  }, []);
+  }, [refetch]);
   console.log(data);
   if (error) {
     return (
@@ -117,20 +118,13 @@ export default function ConfirmationSreen() {
       date_hours: formattedDate + " - " + clock,
     };
     console.log(dataId);
-    axios({
-      url: "http://192.168.1.3:5000/api/v1/transaction/updatetransaction/",
-      method: "POST",
-      data: dataId,
-    })
-      .then((res) => {
-        AsyncStorage.setItem("DataTransaction", JSON.stringify(res.data.data));
-        console.log(res.data.data);
-        navigation.navigate("Dashboard");
-      })
-      .catch((err) => {
-        console.log(err, "Tidak bisa terkirim");
-        // navigation.navigate("Dashboard");
-      });
+
+    AsyncStorage.setItem("DataTransaction", JSON.stringify(dataId));
+    console.log(dataId, "Data Safe");
+    navigation.navigate("Confirm Pin");
+
+    console.log(err, "Tidak bisa terkirim");
+    // navigation.navigate("Dashboard");
   };
 
   // Date & Hours

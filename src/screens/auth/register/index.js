@@ -9,6 +9,7 @@ import { useState } from "react";
 import stylesAuth from "../../../styles/globalcss";
 stylesAuth;
 import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
@@ -21,11 +22,11 @@ export default function SignUpScreen({ navigation }) {
     const dataLogin = {
       email: email,
       password: password,
-      firstname: userName,
+      first_name: userName,
     };
     console.log(dataLogin);
     axios({
-      url: "http://192.168.1.3:5000/api/v1/auth/register",
+      url: "http://192.168.1.2:5000/api/v1/auth/register",
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -33,8 +34,9 @@ export default function SignUpScreen({ navigation }) {
       data: dataLogin,
     })
       .then((res) => {
-        navigation.navigate("Login");
-        console.log(res);
+        AsyncStorage.setItem("userLogin", JSON.stringify(res.data.data));
+        navigation.navigate("Create Pin");
+        console.log(res.data.data);
       })
       .catch((err) => {
         console.log(err, "Tidak bisa terkirim");

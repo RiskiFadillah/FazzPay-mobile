@@ -37,6 +37,7 @@ export default function TransferReceiver() {
   const handleInputChange = (field, value) => {
     setFormTransfer({ ...formTrasnsfer, [field]: value });
   };
+  const [refetch, setRefetch] = useState(false);
   const handleSubmit = async () => {
     const dataId = {
       id_sender: id_sender,
@@ -98,16 +99,16 @@ export default function TransferReceiver() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.3:5000/api/v1/users/${id_receiver}`
+          `http://192.168.1.2:5000/api/v1/users/${id_receiver}`
         );
-        setData(response.data.data);
+        setRefetch(setData(response.data.data));
         console.log(response.data.data);
       } catch (err) {
         setError(err);
       }
     };
     fetchData();
-  }, []);
+  }, [refetch]);
 
   if (error) {
     return (

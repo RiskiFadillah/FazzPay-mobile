@@ -20,9 +20,9 @@ export default function ReceiverScreen({ navigation }) {
   const [dataUsers, setDataUsers] = useState([]),
     [refetch, setRefetch] = useState(false),
     [isModalVisible, setIsModalVisible] = useState(false);
-  
+
   //to get id Receiver
-    const navigateById = (id_users, navigation) => {
+  const navigateById = (id_users, navigation) => {
     navigation.navigate("Transfer", { id_users: id_users });
     AsyncStorage.setItem("id_reciver", id_users);
     console.log(id_users, "dari navigate");
@@ -37,7 +37,7 @@ export default function ReceiverScreen({ navigation }) {
 
   useEffect(() => {
     axios
-      .get("http://192.168.1.3:5000/api/v1/users?limit=4")
+      .get("http://192.168.1.2:5000/api/v1/users?limit=6")
       .then((res) => setDataUsers(res.data.data))
       .catch((err) => console.log(err.message));
   }, [refetch]);

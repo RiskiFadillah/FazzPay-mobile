@@ -11,14 +11,15 @@ stylesAuth;
 import axios from "axios";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 AsyncStorage;
-
+useNavigation;
 // Style
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigation = useNavigation();
   const handleLogin = (e) => {
     e.preventDefault();
     const dataLogin = {
@@ -27,7 +28,7 @@ export default function LoginScreen({ navigation }) {
     };
     console.log(dataLogin);
     axios({
-      url: "http://192.168.1.3:5000/api/v1/auth/login",
+      url: "http://192.168.1.2:5000/api/v1/auth/login",
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
