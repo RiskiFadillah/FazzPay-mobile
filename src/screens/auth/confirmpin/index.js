@@ -120,11 +120,11 @@ export default function ConfirmPinScreen() {
       console.log(dataId);
       try {
         const response1 = await axios.post(
-          "http://192.168.1.2:5000/api/v1/transaction/updatetransaction/",
+          "http://192.168.1.4:5000/api/v1/transaction/updatetransaction/",
           dataId
         );
         const response2 = await axios.post(
-          "http://192.168.1.2:5000/api/v1/auth/confirm-pin",
+          "http://192.168.1.4:5000/api/v1/auth/confirm-pin",
           dataPin
         );
         console.log(response1.data);

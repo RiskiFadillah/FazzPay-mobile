@@ -5,6 +5,8 @@ import {
   TouchableOpacity,
   Pressable,
   ScrollView,
+  ToastAndroid,
+  Image,
 } from "react-native";
 import stylesAuth from "../../../styles/globalcss";
 stylesAuth;
@@ -18,31 +20,52 @@ useNavigation;
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigation = useNavigation();
+
+  const handleImageClick = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleEmail = (text) => {
+    setEmail(text);
+
+    if (text && !text.includes("@")) {
+      setErrorEmail("Invalid email format");
+    } else {
+      setErrorEmail("");
+    }
+  };
+
   const handleLogin = (e) => {
-    e.preventDefault();
-    const dataLogin = {
-      email: email,
-      password: password,
-    };
-    console.log(dataLogin);
-    axios({
-      url: "http://192.168.1.2:5000/api/v1/auth/login",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: dataLogin,
-    })
-      .then((res) => {
-        AsyncStorage.setItem("userLogin", JSON.stringify(res.data.data));
-        navigation.navigate("Dashboard");
+    if (errorEmail) {
+      ToastAndroid.show(errorEmail, ToastAndroid.LONG);
+    } else {
+      e.preventDefault();
+      const dataLogin = {
+        email: email,
+        password: password,
+      };
+      console.log(dataLogin);
+      axios({
+        url: "http://192.168.1.4:5000/api/v1/auth/login",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        data: dataLogin,
       })
-      .catch((err) => {
-        console.log(err, "Tidak bisa terkirim");
-        // navigation.navigate("Dashboard");
-      });
+        .then((res) => {
+          AsyncStorage.setItem("userLogin", JSON.stringify(res.data.data));
+          navigation.navigate("Dashboard");
+        })
+        .catch((err) => {
+          console.log(err.response.data.message, "Tidak bisa terkirim");
+          ToastAndroid.show(err.response.data.message, ToastAndroid.LONG);
+        });
+    }
   };
   return (
     <>
@@ -67,17 +90,22 @@ export default function LoginScreen() {
 
           <TextInput
             style={stylesAuth.input}
-            onChangeText={setEmail}
+            onChangeText={handleEmail}
             value={email}
+            keyboardType="email-address"
             placeholder="📧 Email"
           />
-          <TextInput
-            style={stylesAuth.input}
-            onChangeText={setPassword}
-            value={password}
-            placeholder="🔒 Password"
-            secureTextEntry
-          />
+          <View style={stylesAuth.input}>
+            <TextInput
+              secureTextEntry={!showPassword}
+              onChangeText={setPassword}
+              value={password}
+              placeholder="🔒 Password"
+            />
+            <TouchableOpacity onPress={handleImageClick}>
+              <Image source={require("../../../images/illuminati.png")} />
+            </TouchableOpacity>
+          </View>
 
           <Text
             style={{

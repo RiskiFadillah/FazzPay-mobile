@@ -24,6 +24,10 @@ import SuccessTransferScreen from "./src/screens/successTransfer";
 import FailTransferScreen from "./src/screens/failTransfer";
 import ProfileScreen from "./src/screens/profile";
 import DrawerCustom from "./src/components/drawerNavigation";
+import PersonalInfo from "./src/screens/profile/personalInfo";
+import ChangePassword from "./src/screens/profile/changePassword";
+import ChangePin from "./src/screens/profile/changePin";
+
 // Style
 import stylesDrawer from "./src/styles/styleDrawer";
 
@@ -108,6 +112,9 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+        <Stack.Screen name="Personal Information" component={PersonalInfo} />
+        <Stack.Screen name="Change Password" component={ChangePassword} />
+        <Stack.Screen name="Change Pin" component={ChangePin} />
       </Stack.Navigator>
     </NavigationContainer>
     // <HomeScreen />

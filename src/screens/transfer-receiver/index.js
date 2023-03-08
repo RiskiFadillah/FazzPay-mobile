@@ -99,7 +99,7 @@ export default function TransferReceiver() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.2:5000/api/v1/users/${id_receiver}`
+          `http://192.168.1.4:5000/api/v1/users/${id_receiver}`
         );
         setRefetch(setData(response.data.data));
         console.log(response.data.data);
@@ -130,15 +130,16 @@ export default function TransferReceiver() {
   }
 
   const images = data.images;
+  console.log(data.balance);
   return (
     <>
       <View style={stylesTransfer.containerBody}>
         <View style={stylesTransfer.cardContainer}>
-          {data ? (
+          {images ? (
             <Image source={{ uri: images }} style={stylesTransfer.image} />
           ) : (
             <Image
-              source={require("../../images/sakura.jpg")}
+              source={require("../../images/default-person.jpg")}
               style={stylesTransfer.image}
             />
           )}

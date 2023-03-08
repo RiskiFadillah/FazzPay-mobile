@@ -7,11 +7,13 @@ import {
   ScrollView,
   Image,
   RefreshControl,
+  Switch,
 } from "react-native";
 import stylesProfile from "../../styles/styleProfile";
 import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -19,6 +21,9 @@ export default function ProfileScreen() {
     value: false,
     data: {},
   });
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const navigation = useNavigation();
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("userLogin");
@@ -89,25 +94,15 @@ export default function ProfileScreen() {
           <Text>{dataUsers ? dataUsers.phone_number : ""}</Text>
         </View>
         <TouchableOpacity
-          style={{
-            width: "100%",
-            backgroundColor: "#E5E8ED",
-            marginTop: 30,
-            padding: 17,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-          onPress={() => {
-            console.log("Tombol ditekan!");
-          }}
+          style={stylesProfile.buttonInfo}
+          onPress={() => navigation.navigate("Personal Information")}
         >
           <Text
             style={{
               color: "black",
               fontWeight: "bold",
               fontSize: 18,
+              alignItems: "center",
             }}
           >
             Personal Information
@@ -123,19 +118,8 @@ export default function ProfileScreen() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{
-            width: "100%",
-            backgroundColor: "#E5E8ED",
-            marginTop: 15,
-            padding: 17,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-          onPress={() => {
-            console.log("Tombol ditekan!");
-          }}
+          style={stylesProfile.buttonInfo2}
+          onPress={() => navigation.navigate("Change Password")}
         >
           <Text
             style={{
@@ -157,19 +141,8 @@ export default function ProfileScreen() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{
-            width: "100%",
-            backgroundColor: "#E5E8ED",
-            marginTop: 15,
-            padding: 17,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-          onPress={() => {
-            console.log("Tombol ditekan!");
-          }}
+          style={stylesProfile.buttonInfo2}
+          onPress={() => navigation.navigate("Change Pin")}
         >
           <Text
             style={{
@@ -191,16 +164,7 @@ export default function ProfileScreen() {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{
-            width: "100%",
-            backgroundColor: "#E5E8ED",
-            marginTop: 15,
-            padding: 17,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
+          style={stylesProfile.buttonInfo2}
           onPress={() => {
             console.log("Tombol ditekan!");
           }}
@@ -210,31 +174,29 @@ export default function ProfileScreen() {
               color: "black",
               fontWeight: "bold",
               fontSize: 18,
+              paddingTop:10
             }}
           >
             Notification
           </Text>
-          <Text
+          <View
             style={{
               color: "black",
               fontWeight: "bold",
               fontSize: 20,
             }}
           >
-            ➡
-          </Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={{
-            width: "100%",
-            backgroundColor: "#E5E8ED",
-            marginTop: 15,
-            padding: 17,
-            borderRadius: 10,
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
+          style={stylesProfile.buttonInfo2}
           onPress={() => {
             console.log("Tombol ditekan!");
           }}

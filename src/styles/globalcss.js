@@ -29,6 +29,9 @@ const stylesAuth = StyleSheet.create({
     borderLeftWidth: 0,
     borderColor: "#ccc",
     marginBottom: 10,
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
   },
   button: {
     backgroundColor: "#6379F4",

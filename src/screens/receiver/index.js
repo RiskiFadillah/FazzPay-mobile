@@ -21,6 +21,8 @@ export default function ReceiverScreen({ navigation }) {
     [refetch, setRefetch] = useState(false),
     [isModalVisible, setIsModalVisible] = useState(false);
 
+  // Search
+
   //to get id Receiver
   const navigateById = (id_users, navigation) => {
     navigation.navigate("Transfer", { id_users: id_users });
@@ -37,16 +39,17 @@ export default function ReceiverScreen({ navigation }) {
 
   useEffect(() => {
     axios
-      .get("http://192.168.1.2:5000/api/v1/users?limit=6")
+      .get(`http://192.168.1.4:5000/api/v1/users?limit=10`)
       .then((res) => setDataUsers(res.data.data))
       .catch((err) => console.log(err.message));
   }, [refetch]);
 
-  // console.log(dataUsers);
+  console.log(dataUsers);
+
   return (
     <>
       <View style={styleReceiver.containerBody}>
-        <View style={{ marginTop: 10 }}>
+        <View style={{ marginTop: 5 }}>
           <TextInput
             style={{
               width: "100%",
@@ -65,7 +68,7 @@ export default function ReceiverScreen({ navigation }) {
           </Text>
         </View>
         <ScrollView>
-          <View style={{ height: 500 }}>
+          <View style={{ height: 900 }}>
             {dataUsers.map((item) => {
               return (
                 <TouchableOpacity
@@ -75,7 +78,7 @@ export default function ReceiverScreen({ navigation }) {
                   onPress={() => navigateById(item.id_users, navigation)}
                   style={styleReceiver.cardContainer}
                 >
-                  {item ? (
+                  {item.images ? (
                     <Image
                       source={{
                         uri: item.images,
@@ -84,7 +87,7 @@ export default function ReceiverScreen({ navigation }) {
                     />
                   ) : (
                     <Image
-                      source={require("../../images/sakura.jpg")}
+                      source={require("../../images/default-person.jpg")}
                       style={styleReceiver.image}
                     />
                   )}

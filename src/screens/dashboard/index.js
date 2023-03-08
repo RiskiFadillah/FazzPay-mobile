@@ -53,7 +53,7 @@ export default function DashboardScreen({ navigation }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.2:5000/api/v1/users/${id_users}`
+          `http://192.168.1.4:5000/api/v1/users/${id_users}`
         );
         setRefetch(setDataUsers(response.data.data));
         console.log(response.data.data);
@@ -104,7 +104,7 @@ export default function DashboardScreen({ navigation }) {
             />
           ) : (
             <Image
-              source={require("../../images/sakura.jpg")}
+              source={require("../../images/default-person.jpg")}
               style={stylesDashboard.imageProfile}
             />
           )}
