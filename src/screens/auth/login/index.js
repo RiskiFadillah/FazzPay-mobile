@@ -50,7 +50,7 @@ export default function LoginScreen() {
       };
       console.log(dataLogin);
       axios({
-        url: "http://192.168.1.4:5000/api/v1/auth/login",
+        url: "http://192.168.1.5:5000/api/v1/auth/login",
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

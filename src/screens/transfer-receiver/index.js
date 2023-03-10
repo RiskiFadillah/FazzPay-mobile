@@ -99,7 +99,7 @@ export default function TransferReceiver() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.4:5000/api/v1/users/${id_receiver}`
+          `http://192.168.1.5:5000/api/v1/users/${id_receiver}`
         );
         setRefetch(setData(response.data.data));
         console.log(response.data.data);

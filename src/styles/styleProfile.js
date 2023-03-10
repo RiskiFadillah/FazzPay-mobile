@@ -41,6 +41,43 @@ const stylesProfile = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  containerModal: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    backgroundColor: "#E5E8ED",
+    padding: 5,
+  },
+  buttonText: {
+    color: "black",
+    fontSize: 15,
+  },
+  overlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  modal: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    display: "flex",
+    flexDirection: "row",
+    gap: 15,
+  },
+  modalButton: {
+    backgroundColor: "#6379F4",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
+  },
+  modalButtonText: {
+    color: "#fff",
+    fontSize: 18,
+  },
 });
 
 export default stylesProfile;

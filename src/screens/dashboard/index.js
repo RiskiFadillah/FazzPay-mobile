@@ -53,7 +53,7 @@ export default function DashboardScreen({ navigation }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.4:5000/api/v1/users/${id_users}`
+          `http://192.168.1.5:5000/api/v1/users/${id_users}`
         );
         setRefetch(setDataUsers(response.data.data));
         console.log(response.data.data);
@@ -159,7 +159,14 @@ export default function DashboardScreen({ navigation }) {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity style={stylesDashboard.button}>
-            <Text style={stylesDashboard.buttonText}>➕ Top Up</Text>
+            <Text
+              style={stylesDashboard.buttonText}
+              onPress={() => {
+                navigation.navigate("Top Up");
+              }}
+            >
+              ➕ Top Up
+            </Text>
           </TouchableOpacity>
         </View>
         <View

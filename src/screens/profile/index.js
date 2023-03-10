@@ -8,7 +8,10 @@ import {
   Image,
   RefreshControl,
   Switch,
+  Modal,
+  TouchableWithoutFeedback,
 } from "react-native";
+
 import stylesProfile from "../../styles/styleProfile";
 import { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -17,10 +20,26 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function ProfileScreen() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [imageUri, setImageUri] = useState(null);
   const [isLoggin, setIsLoggin] = useState({
     value: false,
     data: {},
   });
+  const [visible, setVisible] = useState(false);
+
+  const handleOpenModal = () => {
+    setVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setVisible(false);
+  };
+
+  // const handlePress2 = () => {
+  //   console.log("Press 2");
+  //   handleCloseModal();
+  // };
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
   const navigation = useNavigation();
@@ -63,10 +82,26 @@ export default function ProfileScreen() {
 
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
+      handleCloseModal();
     } else {
       alert("You did not select any image.");
     }
   };
+
+  const chooseImage = () => {
+    ImagePicker.getMediaLibraryPermissionsAsync(
+      {
+        mediaType: 'photo',
+        includeBase64: false,
+      },
+      response => {
+        if (response.uri) {
+          setImageUri(response.uri);
+        }
+      },
+    );
+  };
+
   return (
     <>
       <View style={stylesProfile.containerBody}>
@@ -85,8 +120,10 @@ export default function ProfileScreen() {
             />
           )}
 
-          <Pressable onPress={pickImageAsync}>
-            <Text>Edit</Text>
+          <Pressable onPress={handleOpenModal}>
+            <View style={stylesProfile.button}>
+              <Text style={stylesProfile.buttonText}>Edit</Text>
+            </View>
           </Pressable>
           <Text style={stylesProfile.userName}>
             {dataUsers ? dataUsers.first_name : ""}
@@ -174,7 +211,7 @@ export default function ProfileScreen() {
               color: "black",
               fontWeight: "bold",
               fontSize: 18,
-              paddingTop:10
+              paddingTop: 10,
             }}
           >
             Notification
@@ -220,6 +257,34 @@ export default function ProfileScreen() {
             ➡
           </Text>
         </TouchableOpacity>
+      </View>
+
+      {/* Modal */}
+      <View style={stylesProfile.containerModal}>
+        <Modal transparent visible={visible} animationType="fade">
+          <TouchableWithoutFeedback onPress={handleCloseModal}>
+            <View style={stylesProfile.overlay}>
+              <View style={stylesProfile.modal}>
+                <Pressable
+                  style={stylesProfile.modalButton}
+                  onPress={pickImageAsync}
+                >
+                  <Text style={stylesProfile.modalButtonText}>
+                    📸 Take Photo
+                  </Text>
+                </Pressable>
+                <Pressable
+                  style={stylesProfile.modalButton}
+                  onPress={chooseImage}
+                >
+                  <Text style={stylesProfile.modalButtonText}>
+                    🖼 From Gallery
+                  </Text>
+                </Pressable>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
       </View>
     </>
   );

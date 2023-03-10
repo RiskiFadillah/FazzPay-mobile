@@ -39,7 +39,7 @@ export default function ReceiverScreen({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`http://192.168.1.4:5000/api/v1/users?limit=10`)
+      .get(`http://192.168.1.5:5000/api/v1/users?limit=10`)
       .then((res) => setDataUsers(res.data.data))
       .catch((err) => console.log(err.message));
   }, [refetch]);

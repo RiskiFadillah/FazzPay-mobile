@@ -17,6 +17,7 @@ import SignUpScreen from "./src/screens/auth/register";
 import CreatePinScreen from "./src/screens/auth/createpin";
 import DashboardScreen from "./src/screens/dashboard";
 import TransactionScreen from "./src/screens/transaction";
+import TopupScreen from "./src/screens/topup";
 import ReceiverScreen from "./src/screens/receiver";
 import TransferReceiver from "./src/screens/transfer-receiver";
 import ConfirmationSreen from "./src/screens/confirmation";
@@ -27,7 +28,6 @@ import DrawerCustom from "./src/components/drawerNavigation";
 import PersonalInfo from "./src/screens/profile/personalInfo";
 import ChangePassword from "./src/screens/profile/changePassword";
 import ChangePin from "./src/screens/profile/changePin";
-
 // Style
 import stylesDrawer from "./src/styles/styleDrawer";
 
@@ -98,6 +98,7 @@ export default function App() {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Transaction" component={TransactionScreen} />
+        <Stack.Screen name="Top Up" component={TopupScreen} />
         <Stack.Screen name="Find Receiver" component={ReceiverScreen} />
         <Stack.Screen name="Transfer" component={TransferReceiver} />
         <Stack.Screen name="Confirmation" component={ConfirmationSreen} />

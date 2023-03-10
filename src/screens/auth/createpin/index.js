@@ -88,7 +88,7 @@ export default function CreatePinScreen({ navigation }) {
       console.log(pin);
       try {
         const response = await axios.patch(
-          `http://192.168.1.4:5000/api/v1/auth/createpin/${id}`,
+          `http://192.168.1.5:5000/api/v1/auth/createpin/${id}`,
           { pin }
         );
         console.log(response.data.data);
