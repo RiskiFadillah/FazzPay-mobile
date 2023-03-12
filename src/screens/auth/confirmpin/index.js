@@ -120,11 +120,11 @@ export default function ConfirmPinScreen() {
       console.log(dataId);
       try {
         const response1 = await axios.post(
-          "http://192.168.1.5:5000/api/v1/transaction/updatetransaction/",
+          "https://fazzpay-be.cyclic.app/api/v1/transaction/updatetransaction/",
           dataId
         );
         const response2 = await axios.post(
-          "http://192.168.1.5:5000/api/v1/auth/confirm-pin",
+          "https://fazzpay-be.cyclic.app/api/v1/auth/confirm-pin",
           dataPin
         );
         console.log(response1.data);

@@ -78,7 +78,7 @@ export default function ConfirmationSreen() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.4:5000/api/v1/users/${id_reciver}`
+          `https://fazzpay-be.cyclic.app/api/v1/users/${id_reciver}`
         );
         setRefetch(setData(response.data.data));
         console.log(response.data.data);

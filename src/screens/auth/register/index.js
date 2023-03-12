@@ -49,7 +49,7 @@ export default function SignUpScreen({ navigation }) {
       };
       console.log(dataLogin);
       axios({
-        url: "http://192.168.1.5:5000/api/v1/auth/register",
+        url: "https://fazzpay-be.cyclic.app/api/v1/auth/register",
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",

@@ -53,7 +53,7 @@ export default function DashboardScreen({ navigation }) {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://192.168.1.5:5000/api/v1/users/${id_users}`
+          `https://fazzpay-be.cyclic.app/api/v1/users/${id_users}`
         );
         setRefetch(setDataUsers(response.data.data));
         console.log(response.data.data);
