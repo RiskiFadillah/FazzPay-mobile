@@ -8,16 +8,81 @@ import {
   Image,
   RefreshControl,
   Switch,
+  Modal,
 } from "react-native";
+import { useState, useEffect } from "react";
 import stylesTopUp from "../../styles/styleTopup";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 export default function TopupScreen() {
+  const navigation = useNavigation();
+  const [topUpAmount, setTopUpAmount] = useState("");
+  const [balance, setBalance] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isLoggin, setIsLoggin] = useState({
+    value: false,
+    data: {},
+  });
+  const [refetch, setRefetch] = useState(false);
+
+  const getData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("userLogin");
+      if (value !== null) {
+        setRefetch(
+          setIsLoggin({
+            value: true,
+            data: JSON.parse(value),
+          })
+        );
+      } else {
+        setRefetch(
+          setIsLoggin({
+            value: false,
+            data: null,
+          })
+        );
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, [refetch]);
+
+  const user_balance = isLoggin.value
+    ? isLoggin.data.user_profile.balance
+    : null;
+  const id_users = isLoggin.value ? isLoggin.data.user_profile.id_users : null;
+
+  const handleTopUp = () => {
+    console.log(topUpAmount);
+    // melakukan pengiriman data ke server untuk top up
+    axios({
+      url: `https://fazzpay-be.cyclic.app/api/v1/users/topup/${id_users}`,
+      method: "PATCH",
+      data: { balance: topUpAmount },
+    })
+      .then((res) => {
+        console.log(res.data.message);
+        setBalance(res.data.balance);
+        navigation.navigate("Login");
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
   return (
     <>
       <View style={stylesTopUp.containerBody}>
         <View style={stylesTopUp.containerTop}>
           <Text style={{ fontSize: 18, fontWeight: "700" }}>
-            Saldo Fazzpay Cash
+            Saldo Fazzpay Cash Rp.{user_balance}
           </Text>
         </View>
         <View style={{ marginTop: 50 }}>
@@ -25,7 +90,7 @@ export default function TopupScreen() {
         </View>
         <TouchableOpacity
           style={stylesTopUp.buttonInfo}
-          onPress={() => navigation.navigate("Personal Information")}
+          onPress={() => navigation.navigate("Top Up")}
         >
           <View
             style={{
@@ -68,7 +133,7 @@ export default function TopupScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={stylesTopUp.buttonInfo}
-          onPress={() => navigation.navigate("Personal Information")}
+          onPress={() => navigation.navigate("Top Up")}
         >
           <View
             style={{
@@ -111,7 +176,7 @@ export default function TopupScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={stylesTopUp.buttonInfo2}
-          onPress={() => navigation.navigate("Change Pin")}
+          onPress={() => navigation.navigate("Top Up")}
         >
           <Text
             style={{
@@ -159,7 +224,7 @@ export default function TopupScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={stylesTopUp.buttonInfo2}
-          onPress={() => navigation.navigate("Change Pin")}
+          onPress={() => navigation.navigate("Top Up")}
         >
           <Text
             style={{
@@ -168,7 +233,7 @@ export default function TopupScreen() {
               fontSize: 18,
             }}
           >
-            📱 Internet / Mobile Bangking
+            📱 Internet / Mobile Banking
           </Text>
           <Text
             style={{
@@ -182,7 +247,7 @@ export default function TopupScreen() {
         </TouchableOpacity>
         <TouchableOpacity
           style={stylesTopUp.buttonInfo2}
-          onPress={() => navigation.navigate("Change Pin")}
+          onPress={() => setModalVisible(true)}
         >
           <Text
             style={{
@@ -203,6 +268,27 @@ export default function TopupScreen() {
             ➡
           </Text>
         </TouchableOpacity>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => setModalVisible(false)}
+        >
+          <View style={stylesTopUp.modalContainer}>
+            <View style={stylesTopUp.modal}>
+              <TextInput
+                style={stylesTopUp.input}
+                placeholder="Enter top-up amount"
+                onChangeText={(text) => setTopUpAmount(text)}
+                value={topUpAmount}
+                keyboardType="numeric" // Menggunakan nilai balance dalam topUpAmount sebagai value pada TextInput
+              />
+              <TouchableOpacity onPress={handleTopUp}>
+                <Text style={stylesTopUp.submitButton}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
       </View>
     </>
   );

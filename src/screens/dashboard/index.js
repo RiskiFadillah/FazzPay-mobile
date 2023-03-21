@@ -191,7 +191,7 @@ export default function DashboardScreen({ navigation }) {
                     style={stylesDashboard.image}
                   />
                   <View style={stylesDashboard.cardText}>
-                    <Text style={stylesDashboard.name}>Sakura</Text>
+                    <Text style={stylesDashboard.name}>John Doe</Text>
                     <Text style={{ fontSize: 10 }}>Transfer</Text>
                   </View>
                   <Text style={stylesDashboard.price}>+Rp.50.000</Text>
